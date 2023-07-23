@@ -19,5 +19,47 @@
       }
     },
     "additionalProperties": false
+  },
+  "place_search": {
+    "type": "object",
+    "properties": {
+      "q": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "startIndex": {
+        "type": "string",
+        "minLength": 1,
+        "format": "integer"
+      },
+      "count": {
+        "type": "string",
+        "minLength": 1,
+        "format": "integer"
+      }
+    },
+    "additionalProperties": false
+  },
+  "activity_search": {
+    "type": "object",
+    "properties": {
+      "q": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64
+      },
+      "startIndex": {
+        "type": "string",
+        "minLength": 1,
+        "format": "integer"
+      },
+      "count": {
+        "type": "string",
+        "minLength": 1,
+        "format": "integer"
+      }
+    },
+    "additionalProperties": false
   }
 }

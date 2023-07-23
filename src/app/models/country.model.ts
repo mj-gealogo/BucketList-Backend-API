@@ -17,7 +17,7 @@ const viewAll = async (searchQuery: countrySearchQuery): Promise<countryReturn> 
 const getOne = async (id: number): Promise<country> => {
     Logger.info(`Getting one country from database`);
     const conn = await getPool().getConnection();
-    const query = `select country.id as countryId, name, description FROM Country WHERE id = ?`;
+    const query = `select id as countryId, name, description FROM Country WHERE id = ?`;
     const [ rows ] = await conn.query( query, [id]);
     await conn.release();
     return rows;

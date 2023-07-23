@@ -36,16 +36,25 @@ const viewAll = async (req: Request, res: Response): Promise<void> => {
 };
 
 const getOne = async (req: Request, res: Response): Promise<void> => {
-    try{
-        // Your code goes here
-        res.statusMessage = "Not Implemented Yet!";
-        res.status(501).send();
-        return;
+    try {
+        const countryId = parseInt(req.params.Cid, 10);
+        if (isNaN(countryId)) {
+            res.statusMessage = "Id must be an integer"
+            res.status(400).send();
+            return;
+        }
+        const country = await Country.getOne(countryId);
+        if (country !== null) {
+            res.status(200).send(country);
+            return;
+        } else {
+            res.status(404).send();
+            return;
+        }
     } catch (err) {
         Logger.error(err);
         res.statusMessage = "Internal Server Error";
         res.status(500).send();
-        return;
     }
 }
 
