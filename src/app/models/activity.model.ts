@@ -1,5 +1,4 @@
 import {getPool} from "../../config/db";
-import {ResultSetHeader} from "mysql2";
 import Logger from '../../config/logger';
 const viewAll = async (searchQuery: activitySearchQuery): Promise<activityReturn> => {
     Logger.info(`Getting all activities from database`);
@@ -32,6 +31,17 @@ const getAllForPlace = async (Cid: number, Pid: number): Promise<activity> => {
     return rows;
 }
 
+const getImageFilename = async (id: number): Promise<string> => {
+    const query = 'SELECT `image_filename` FROM Activity WHERE id = ?';
+    const rows = await getPool().query(query, [id]);
+    return rows[0].length === 0 ? null : rows[0][0].image_filename;
+}
+
+const setImageFilename = async (id: number, filename: string): Promise<void> => {
+    const query = "UPDATE Activity SET `image_filename`=? WHERE `id`=?";
+    await getPool().query(query, [filename, id]);
+}
 
 
-export {viewAll, getOne, getAllForPlace};
+
+export {viewAll, getOne, getAllForPlace, getImageFilename, setImageFilename};

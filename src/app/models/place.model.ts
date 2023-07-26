@@ -1,5 +1,4 @@
 import {getPool} from "../../config/db";
-import {ResultSetHeader} from "mysql2";
 import Logger from '../../config/logger';
 const viewAll = async (searchQuery: placeSearchQuery): Promise<placeReturn> => {
     Logger.info(`Getting all places from database`);
@@ -23,15 +22,25 @@ const getOne = async (Cid: number): Promise<place> => {
     return rows;
 }
 
-const getAllForCountry = async (Cid: number): Promise<place> => {
+const getAllForCountry = async (Cid: number): Promise<any> => {
     Logger.info(`Getting all places for a country from database`);
     const conn = await getPool().getConnection();
-    const query = `select p.id as placeId, p.name, p.description FROM Place As p JOIN Country As c ON p.country = c.id WHERE country = ?`;
+    const query = `select p.id as placeId, p.name, p.description, c.name as country FROM Place As p JOIN Country As c ON p.country = c.id WHERE country = ?`;
     const [ rows ] = await conn.query( query, [Cid]);
     await conn.release();
     return rows;
 }
 
+const getImageFilename = async (id: number): Promise<string> => {
+    const query = 'SELECT `image_filename` FROM Place WHERE id = ?';
+    const rows = await getPool().query(query, [id]);
+    return rows[0].length === 0 ? null : rows[0][0].image_filename;
+}
+
+const setImageFilename = async (id: number, filename: string): Promise<void> => {
+    const query = "UPDATE Place SET `image_filename`=? WHERE `id`=?";
+    await getPool().query(query, [filename, id]);
+}
 
 
-export {viewAll, getOne, getAllForCountry};
+export {viewAll, getOne, getAllForCountry, getImageFilename, setImageFilename};

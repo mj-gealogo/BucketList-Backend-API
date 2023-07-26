@@ -66,9 +66,9 @@ const getAllForCountry = async (req: Request, res: Response): Promise<void> => {
             res.status(400).send();
             return;
         }
-        const country = await Place.getAllForCountry(countryId);
-        if (country !== null) {
-            res.status(200).send(country);
+        const places = await Place.getAllForCountry(countryId);
+        if (places !== null) {
+            res.status(200).send(places);
             return;
         } else {
             res.status(404).send();

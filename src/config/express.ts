@@ -27,7 +27,7 @@ export default () => {
     // ROUTES
     require('../app/routes/backdoor.server.routes')(app);
     // require('../app/routes/user.server.routes')(app);
-    require('../app/routes/country.server.routes')(app);
+    require('../app/routes/general.server.routes')(app);
 
 
     return app;

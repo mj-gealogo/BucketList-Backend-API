@@ -1,5 +1,4 @@
 import {getPool} from "../../config/db";
-import {ResultSetHeader} from "mysql2";
 import Logger from '../../config/logger';
 const viewAll = async (searchQuery: countrySearchQuery): Promise<countryReturn> => {
     Logger.info(`Getting all countries from database`);
@@ -23,6 +22,15 @@ const getOne = async (id: number): Promise<country> => {
     return rows;
 }
 
+const getImageFilename = async (id: number): Promise<string> => {
+    const query = 'SELECT `image_filename` FROM Country WHERE id = ?';
+    const rows = await getPool().query(query, [id]);
+    return rows[0].length === 0 ? null : rows[0][0].image_filename;
+}
 
+const setImageFilename = async (id: number, filename: string): Promise<void> => {
+    const query = "UPDATE Country SET `image_filename`=? WHERE `id`=?";
+    await getPool().query(query, [filename, id]);
+}
 
-export {viewAll, getOne};
+export {viewAll, getOne, getImageFilename, setImageFilename};
