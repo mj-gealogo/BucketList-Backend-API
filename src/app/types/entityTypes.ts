@@ -4,7 +4,7 @@ type countryReturn = {
 }
 
 type country = {
-    countryId: number,
+    id: number,
     name: string,
     description: string
 }
@@ -15,7 +15,7 @@ type placeReturn = {
 }
 
 type place = {
-    placeId: number,
+    id: number,
     name: string,
     description: string
 }
@@ -26,7 +26,7 @@ type activityReturn = {
 }
 
 type activity = {
-    activityId: number,
+    id: number,
     name: string,
     description: string
 }

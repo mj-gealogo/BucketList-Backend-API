@@ -3,7 +3,7 @@ import Logger from '../../config/logger';
 const viewAll = async (searchQuery: activitySearchQuery): Promise<activityReturn> => {
     Logger.info(`Getting all activities from database`);
     const conn = await getPool().getConnection();
-    let query = `select a.id as activityId, a.name, a.description, p.name as place, c.name as country FROM Activity AS a JOIN Place AS p ON a.place = p.id JOIN Country AS c ON p.country = c.id`;
+    let query = `select a.id, a.name, a.description, p.name as place, c.name as country FROM Activity AS a JOIN Place AS p ON a.place = p.id JOIN Country AS c ON p.country = c.id`;
 
     if (searchQuery.q) {
         query += `WHERE name LIKE '%${searchQuery.q}%'`;
@@ -16,7 +16,7 @@ const viewAll = async (searchQuery: activitySearchQuery): Promise<activityReturn
 const getOne = async (Aid: number): Promise<activity> => {
     Logger.info(`Getting one activity from database`);
     const conn = await getPool().getConnection();
-    const query = `select a.id as activityId, a.name, a.description, p.name as place, c.name as country FROM Activity AS a JOIN Place AS p ON a.place = p.id JOIN Country AS c ON p.country = c.id WHERE a.id = ?`;
+    const query = `select a.id, a.name, a.description, p.name as place, c.name as country FROM Activity AS a JOIN Place AS p ON a.place = p.id JOIN Country AS c ON p.country = c.id WHERE a.id = ?`;
     const [ rows ] = await conn.query( query, [Aid]);
     await conn.release();
     return rows;
@@ -25,7 +25,7 @@ const getOne = async (Aid: number): Promise<activity> => {
 const getAllForPlace = async (Cid: number, Pid: number): Promise<activity> => {
     Logger.info(`Getting all activities for a country from database`);
     const conn = await getPool().getConnection();
-    const query = `select a.id as activityId, a.name, a.description, p.name as place, c.name as country FROM Activity AS a JOIN Place AS p On a.place = p.id JOIN Country AS c on p.country = c.id WHERE c.id = ? AND p.id = ?`;
+    const query = `select a.id, a.name, a.description, p.name as place, c.name as country FROM Activity AS a JOIN Place AS p On a.place = p.id JOIN Country AS c on p.country = c.id WHERE c.id = ? AND p.id = ?`;
     const [ rows ] = await conn.query( query, [Cid, Pid]);
     await conn.release();
     return rows;
