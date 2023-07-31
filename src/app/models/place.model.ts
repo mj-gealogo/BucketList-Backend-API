@@ -19,7 +19,8 @@ const getOne = async (Cid: number): Promise<place> => {
     const query = `select p.id, p.name, p.description, c.name as country FROM Place as p JOIN Country AS c ON p.country = c.id WHERE p.id = ?`;
     const [ rows ] = await conn.query( query, [Cid]);
     await conn.release();
-    return rows;
+    const place = rows.length === 0 ? null : rows[0];
+    return place;
 }
 
 const getAllForCountry = async (Cid: number): Promise<any> => {

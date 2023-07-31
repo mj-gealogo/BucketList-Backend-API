@@ -19,7 +19,8 @@ const getOne = async (id: number): Promise<country> => {
     const query = `select id, name, description FROM Country WHERE id = ?`;
     const [ rows ] = await conn.query( query, [id]);
     await conn.release();
-    return rows;
+    const country = rows.length === 0 ? null : rows[0];
+    return country;
 }
 
 const getImageFilename = async (id: number): Promise<string> => {
