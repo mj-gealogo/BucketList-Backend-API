@@ -6,7 +6,11 @@ const viewAll = async (searchQuery: activitySearchQuery): Promise<activityReturn
     let query = `select a.id, a.name, a.description, c.name as country, p.name as place, c.id as cid, p.id as pid FROM Activity AS a JOIN Place AS p ON a.place = p.id JOIN Country AS c ON p.country = c.id`;
 
     if (searchQuery.q) {
-        query += `WHERE name LIKE '%${searchQuery.q}%'`;
+        query += ` WHERE a.name LIKE '%${searchQuery.q}%'`;
+    }
+    query += ` ORDER by a.name`
+    if (searchQuery.count && searchQuery.startIndex) {
+        query += ` LIMIT ${searchQuery.count} OFFSET ${searchQuery.startIndex}`;
     }
     const [ rows ] = await conn.query( query , []);
     await conn.release();

@@ -6,7 +6,11 @@ const viewAll = async (searchQuery: countrySearchQuery): Promise<countryReturn> 
     let query = `select id, name, description FROM Country`;
 
     if (searchQuery.q) {
-        query += `WHERE name LIKE '%${searchQuery.q}%'`;
+        query += ` WHERE name LIKE '%${searchQuery.q}%'`;
+    }
+    query += ` ORDER BY name `
+    if (searchQuery.count && searchQuery.startIndex) {
+        query += ` LIMIT ${searchQuery.count} OFFSET ${searchQuery.startIndex}`;
     }
     const [ rows ] = await conn.query( query );
     await conn.release();
