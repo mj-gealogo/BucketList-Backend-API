@@ -17,7 +17,9 @@ type placeReturn = {
 type place = {
     id: number,
     name: string,
-    description: string
+    description: string,
+    country: string,
+    cid: number
 }
 
 type activityReturn = {
@@ -28,5 +30,9 @@ type activityReturn = {
 type activity = {
     id: number,
     name: string,
-    description: string
+    description: string,
+    country: string,
+    place: string,
+    cid: number,
+    pid: number
 }

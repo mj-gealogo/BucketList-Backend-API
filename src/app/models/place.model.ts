@@ -3,7 +3,7 @@ import Logger from '../../config/logger';
 const viewAll = async (searchQuery: placeSearchQuery): Promise<placeReturn> => {
     Logger.info(`Getting all places from database`);
     const conn = await getPool().getConnection();
-    let query = `select p.id, p.name, p.description, c.name as country FROM Place AS p JOIN Country AS c ON p.country = c.id`;
+    let query = `select p.id, p.name, p.description, c.name as country, c.id as cid FROM Place AS p JOIN Country AS c ON p.country = c.id`;
 
     if (searchQuery.q) {
         query += `WHERE name LIKE '%${searchQuery.q}%'`;
@@ -16,7 +16,7 @@ const viewAll = async (searchQuery: placeSearchQuery): Promise<placeReturn> => {
 const getOne = async (Cid: number): Promise<place> => {
     Logger.info(`Getting one place from database`);
     const conn = await getPool().getConnection();
-    const query = `select p.id, p.name, p.description, c.name as country FROM Place as p JOIN Country AS c ON p.country = c.id WHERE p.id = ?`;
+    const query = `select p.id, p.name, p.description, c.name as country, c.id as cid FROM Place as p JOIN Country AS c ON p.country = c.id WHERE p.id = ?`;
     const [ rows ] = await conn.query( query, [Cid]);
     await conn.release();
     const place = rows.length === 0 ? null : rows[0];
@@ -26,7 +26,7 @@ const getOne = async (Cid: number): Promise<place> => {
 const getAllForCountry = async (Cid: number): Promise<any> => {
     Logger.info(`Getting all places for a country from database`);
     const conn = await getPool().getConnection();
-    const query = `select p.id, p.name, p.description, c.name as country FROM Place As p JOIN Country As c ON p.country = c.id WHERE country = ?`;
+    const query = `select p.id, p.name, p.description, c.name as country, c.id as cid FROM Place As p JOIN Country As c ON p.country = c.id WHERE country = ?`;
     const [ rows ] = await conn.query( query, [Cid]);
     await conn.release();
     return rows;
